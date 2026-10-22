@@ -1,0 +1,51 @@
+{
+  "reviewed_on": "2026-10-22",
+  "notes": "初始资料为少量公开页面中文笔记和项目目录，不是完整临床指南库。未复制原站图片或全文；扩充前核对来源许可和适用地区。",
+  "documents": [
+    {
+      "file": "shingles.md",
+      "kb": "疾病与症状",
+      "category": "disease",
+      "title": "带状疱疹公开资料笔记",
+      "source_url": "https://www.nhs.uk/conditions/shingles/",
+      "publisher": "NHS；中文笔记由项目整理",
+      "authority": 2
+    },
+    {
+      "file": "cough.md",
+      "kb": "疾病与症状",
+      "category": "disease",
+      "title": "咳嗽与就医提示",
+      "source_url": "https://www.nhs.uk/symptoms/cough/",
+      "publisher": "NHS；中文笔记由项目整理",
+      "authority": 2
+    },
+    {
+      "file": "stroke.md",
+      "kb": "就医与风险提示",
+      "category": "general",
+      "title": "卒中与紧急就医",
+      "source_url": "https://www.nhs.uk/conditions/stroke/",
+      "publisher": "NHS；中文笔记由项目整理",
+      "authority": 2
+    },
+    {
+      "file": "lab-results.md",
+      "kb": "检验知识",
+      "category": "lab",
+      "title": "检验结果与临床背景",
+      "source_url": "https://medlineplus.gov/lab-tests/how-to-understand-your-lab-results/",
+      "publisher": "MedlinePlus；中文笔记由项目整理",
+      "authority": 2
+    },
+    {
+      "file": "departments.json",
+      "kb": "医院科室目录",
+      "category": "hospital",
+      "title": "项目科室知识目录",
+      "source_url": "",
+      "publisher": "MedKnowledgeHub 项目目录",
+      "authority": 0
+    }
+  ]
+}

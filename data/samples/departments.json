@@ -1,0 +1,52 @@
+{
+  "records": [
+    {
+      "category": "科室",
+      "name": "皮肤科",
+      "department": "皮肤科",
+      "value": "",
+      "unit": "",
+      "description": "皮肤科属于非手术科室。这是项目内科室知识目录条目，不提供医院实时号源。"
+    },
+    {
+      "category": "科室",
+      "name": "神经科",
+      "department": "神经科",
+      "value": "",
+      "unit": "",
+      "description": "神经科属于非手术科室。这是项目内科室知识目录条目，不提供医院实时号源。"
+    },
+    {
+      "category": "科室",
+      "name": "呼吸与危重症医学科",
+      "department": "呼吸与危重症医学科",
+      "value": "",
+      "unit": "",
+      "description": "呼吸与危重症医学科属于非手术科室。这是项目内科室知识目录条目，不提供医院实时号源。"
+    },
+    {
+      "category": "科室",
+      "name": "消化内科",
+      "department": "消化内科",
+      "value": "",
+      "unit": "",
+      "description": "消化内科属于非手术科室。这是项目内科室知识目录条目，不提供医院实时号源。"
+    },
+    {
+      "category": "科室",
+      "name": "眼科",
+      "department": "眼科",
+      "value": "",
+      "unit": "",
+      "description": "眼科属于手术科室。这是项目内科室知识目录条目，不提供医院实时号源。"
+    },
+    {
+      "category": "科室",
+      "name": "全科医学科",
+      "department": "全科医学科",
+      "value": "",
+      "unit": "",
+      "description": "全科医学科属于非手术科室。这是项目内科室知识目录条目，不提供医院实时号源。"
+    }
+  ]
+}

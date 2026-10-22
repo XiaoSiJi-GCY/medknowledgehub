@@ -1,0 +1,14 @@
+.git
+.venv
+.env
+.idea
+__pycache__
+.pytest_cache
+artifacts
+.venv-eval
+.ruff_cache
+volumes
+data/raw
+data/parsed
+
+.venv-eval

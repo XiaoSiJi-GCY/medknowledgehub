@@ -1,0 +1,8 @@
+# Isolate RAGAS's LangChain 0.3 ecosystem from the main application's LangChain 1.x.
+ragas==0.3.9
+langchain-openai==0.3.35
+langchain-community==0.3.31
+langchain>=0.3.27,<0.4
+openai>=1.104,<2
+pydantic-settings>=2,<3
+pandas>=2.2,<3

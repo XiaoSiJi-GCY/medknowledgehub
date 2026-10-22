@@ -1,0 +1,1 @@
+"""MedKnowledgeHub application package."""

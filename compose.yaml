@@ -1,0 +1,91 @@
+name: medknowledgehub
+services:
+  postgres:
+    image: postgres:16.6-alpine
+    environment:
+      POSTGRES_DB: medhub
+      POSTGRES_USER: medhub
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports: ["127.0.0.1:15432:5432"]
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medhub -d medhub"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports: ["127.0.0.1:16379:6379"]
+    volumes: ["redis_data:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  neo4j:
+    image: neo4j:5.26-community
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Set NEO4J_PASSWORD in .env}
+      NEO4J_server_memory_heap_initial__size: 256m
+      NEO4J_server_memory_heap_max__size: 512m
+      NEO4J_server_memory_pagecache_size: 256m
+    ports: ["127.0.0.1:17474:7474", "127.0.0.1:17687:7687"]
+    volumes: ["neo4j_data:/data"]
+  milvus:
+    image: milvusdb/milvus:v2.6.7
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_USE_EMBED: "true"
+      ETCD_DATA_DIR: /var/lib/milvus/etcd
+      ETCD_CONFIG_PATH: /milvus/configs/embedEtcd.yaml
+      COMMON_STORAGETYPE: local
+      DEPLOY_MODE: STANDALONE
+    ports: ["127.0.0.1:19531:19530", "127.0.0.1:19091:9091"]
+    volumes: ["milvus_data:/var/lib/milvus", "./deploy/embedEtcd.yaml:/milvus/configs/embedEtcd.yaml:ro"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+  api:
+    profiles: ["app"]
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://medhub:${POSTGRES_PASSWORD}@postgres:5432/medhub
+      REDIS_URL: redis://redis:6379/0
+      MILVUS_URI: http://milvus:19530
+      NEO4J_URI: bolt://neo4j:7687
+    ports: ["127.0.0.1:8010:8010"]
+    volumes: ["./data:/app/data", "./artifacts:/app/artifacts"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      milvus: {condition: service_healthy}
+      neo4j: {condition: service_started}
+  worker:
+    profiles: ["app"]
+    build: .
+    command: ["python", "-m", "celery", "-A", "app.workers.celery_app:celery_app", "worker", "--pool=solo", "--loglevel=INFO"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://medhub:${POSTGRES_PASSWORD}@postgres:5432/medhub
+      REDIS_URL: redis://redis:6379/0
+      MILVUS_URI: http://milvus:19530
+      NEO4J_URI: bolt://neo4j:7687
+    volumes: ["./data:/app/data", "./artifacts:/app/artifacts"]
+    depends_on: [api]
+  ui:
+    profiles: ["app"]
+    build: .
+    command: ["python", "-m", "streamlit", "run", "ui/streamlit_app.py", "--server.address=0.0.0.0", "--server.port=8510"]
+    environment:
+      MEDHUB_API_URL: http://api:8010/api/v1
+    ports: ["127.0.0.1:8510:8510"]
+    depends_on: [api]
+volumes:
+  postgres_data:
+  redis_data:
+  neo4j_data:
+  milvus_data:

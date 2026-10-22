@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv/
+.venv-eval/
+.idea/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+*.sqlite3*
+data/raw/
+data/parsed/
+artifacts/
+volumes/

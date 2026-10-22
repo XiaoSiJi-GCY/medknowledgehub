@@ -1,0 +1,8 @@
+{"id": "cough", "query": "咳嗽持续超过三周应该怎么办？", "relevant_titles": ["咳嗽与就医提示"], "expected_route": "hybrid", "unanswerable": false}
+{"id": "eye", "query": "带状疱疹涉及眼部或鼻部时需要注意什么？", "relevant_titles": ["带状疱疹公开资料笔记"], "expected_route": "hybrid", "unanswerable": false}
+{"id": "rash", "query": "带状疱疹的皮疹有什么表现？", "relevant_titles": ["带状疱疹公开资料笔记"], "expected_route": "hybrid", "unanswerable": false}
+{"id": "lab", "query": "为什么不能只看一项检验结果就下结论？", "relevant_titles": ["检验结果与临床背景"], "expected_route": "hybrid", "unanswerable": false}
+{"id": "stroke", "query": "卒中为什么需要紧急就医？", "relevant_titles": ["卒中与紧急就医"], "expected_route": "hybrid", "unanswerable": false}
+{"id": "directory", "query": "科室目录中有哪些科室？", "relevant_titles": ["项目科室知识目录"], "expected_route": "sql", "unanswerable": false}
+{"id": "count", "query": "结构化科室目录一共有多少个科室？", "relevant_titles": ["项目科室知识目录"], "expected_route": "sql", "unanswerable": false}
+{"id": "missing", "query": "本院明天张医生下午几点出诊？", "relevant_titles": [], "expected_route": "hybrid", "unanswerable": true}
