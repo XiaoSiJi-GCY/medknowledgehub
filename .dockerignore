@@ -12,3 +12,7 @@ data/raw
 data/parsed
 
 .venv-eval
+
+.env.*
+!.env.example
+examples/care-suite/.runtime

@@ -14,7 +14,7 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m scripts.configure
 ```
 
-`configure` 只在 `.env` 不存在时创建文件，生成独立数据库密码、管理员密码和服务 token。随后自行填写 `OPENAI_API_KEY`。当前本机已经复用了经授权的硅基流动配置；克隆仓库的读者需要自己的凭据。
+`configure` 只在 `.env` 不存在时创建文件，生成独立数据库密码、管理员密码和服务 token。随后自行填写 `OPENAI_API_KEY`。请使用自己的模型服务凭据；仓库只包含配置模板。
 
 `MODEL_NAME` 用于对话，`EMBEDDING_MODEL` 用于向量化，`RERANK_MODEL` 用于精排。默认三者使用同一 API 提供商。可单独设置 `EMBEDDING_BASE_URL` 和 `RERANK_API_URL` 接入其他兼容服务；更改向量模型或维度后需新建索引集合并重建资料。
 

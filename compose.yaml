@@ -51,7 +51,11 @@ services:
   api:
     profiles: ["app"]
     build: .
-    env_file: .env
+    env_file:
+      - path: .env
+        required: true
+      - path: ../care-suite/.env
+        required: false
     environment:
       DATABASE_URL: postgresql+psycopg://medhub:${POSTGRES_PASSWORD}@postgres:5432/medhub
       REDIS_URL: redis://redis:6379/0
@@ -68,7 +72,11 @@ services:
     profiles: ["app"]
     build: .
     command: ["python", "-m", "celery", "-A", "app.workers.celery_app:celery_app", "worker", "--pool=solo", "--loglevel=INFO"]
-    env_file: .env
+    env_file:
+      - path: .env
+        required: true
+      - path: ../care-suite/.env
+        required: false
     environment:
       DATABASE_URL: postgresql+psycopg://medhub:${POSTGRES_PASSWORD}@postgres:5432/medhub
       REDIS_URL: redis://redis:6379/0

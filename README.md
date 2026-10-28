@@ -27,7 +27,7 @@ Python 3.11、FastAPI、Streamlit、LangChain、LangGraph、Qwen、BGE-M3、BGE-
 
 ## 本机快速启动
 
-进入项目根目录。首次克隆需要创建自己的虚拟环境；当前本机项目已经安装依赖和配置环境。
+进入项目根目录，创建本项目的独立虚拟环境并填写自己的配置。
 
 ```powershell
 py -3.11 -m venv .venv
@@ -100,4 +100,8 @@ docker compose up -d postgres redis neo4j milvus
 
 ## 项目状态
 
-CarePilot 适配器已经提供在 `integrations/carepilot_client.py`，当前 CarePilot 项目仍使用它自己的配置，切换步骤见集成文档。扫描件解析需要 MinerU 服务地址；Langfuse 需要对应项目凭据；使用现有硅基流动 API 时无需本机部署 vLLM。独立模型服务可以通过配置替换，不需要修改工作流。
+CarePilot 适配器已经提供在 `integrations/carepilot_client.py`，本机 CarePilot 已通过后端适配器接入，统一启动与配置见同级 care-suite。扫描件解析需要 MinerU 服务地址；Langfuse 需要对应项目凭据；使用现有硅基流动 API 时无需本机部署 vLLM。独立模型服务可以通过配置替换，不需要修改工作流。
+
+## 联合运行
+
+两个项目已经接通，共享模型与服务凭据统一放在 care-suite/.env。见 [联合运行手册](docs/integration/README.md) 和 [配置清单](docs/integration/01-api-and-keys.md)。

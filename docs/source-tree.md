@@ -1,12 +1,22 @@
 # 源码目录索引
 
-此索引列出实际交付文件，省略虚拟环境、密钥、运行产物及空的包标记。目录中每个模块的职责见 [架构与源码映射](01-architecture.md)。
+列出仓库交付文件，省略包标记、凭据和运行数据。模块职责见 [架构说明](01-architecture.md)。
 
 ```text
 medknowledgehub/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
+├── .idea/
+│   ├── inspectionProfiles/
+│   │   ├── Project_Default.xml
+│   │   └── profiles_settings.xml
+│   ├── .gitignore
+│   ├── medknowledgehub.iml
+│   ├── misc.xml
+│   ├── modules.xml
+│   ├── vcs.xml
+│   └── workspace.xml
 ├── .streamlit/
 │   └── config.toml
 ├── app/
@@ -63,6 +73,11 @@ medknowledgehub/
 ├── docs/
 │   ├── images/
 │   │   └── architecture.svg
+│   ├── integration/
+│   │   ├── 01-api-and-keys.md
+│   │   ├── 02-integration.md
+│   │   ├── 03-validation.md
+│   │   └── README.md
 │   ├── 00-learning-path.md
 │   ├── 01-architecture.md
 │   ├── 02-quickstart.md
@@ -89,6 +104,18 @@ medknowledgehub/
 │   ├── ragas_eval.py
 │   ├── requirements.txt
 │   └── run.py
+├── examples/
+│   └── care-suite/
+│       ├── tests/
+│       │   └── test_configure.py
+│       ├── .env.example
+│       ├── .gitignore
+│       ├── README.md
+│       ├── configure.py
+│       ├── requirements.txt
+│       ├── run.ps1
+│       ├── smoke_live.py
+│       └── suite.py
 ├── integrations/
 │   └── carepilot_client.py
 ├── migrations/
@@ -108,6 +135,7 @@ medknowledgehub/
 ├── tests/
 │   ├── conftest.py
 │   ├── test_api.py
+│   ├── test_integration_client.py
 │   ├── test_lifecycle.py
 │   ├── test_mcp.py
 │   ├── test_metrics.py

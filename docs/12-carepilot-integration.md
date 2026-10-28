@@ -1,32 +1,32 @@
-# 与 CarePilot 的对接
+# 与 CarePilot 联合接入
 
-MedKnowledgeHub 独立部署，当前不自动改动 CarePilot 的环境或数据库。适配器位于 `integrations/carepilot_client.py`，保留 `search(query, limit=...)` 与 `close()` 接口，返回 id、title、url、summary、score。
+两个服务现已接通。统一启动和共享配置见 [Care Suite](integration/README.md)，需要的 API 与 Key 见 [配置清单](integration/01-api-and-keys.md)，源码链路见 [集成架构](integration/02-integration.md)。
 
-## 接入位置
+实际适配器位于 carepilot/app/services/medknowledgehub.py，由 app/services/knowledge.py 工厂按 KNOWLEDGE_BACKEND 创建，并在 app/main.py 注入。医学问答调用 /api/v1/answers，摘要及科室分支调用 /api/v1/knowledge/search；原文通过 CarePilot 已登录接口代理读取。急症分支不等待检索。
 
-1. 将适配器放到 CarePilot 的 services 中。
-2. 在 CarePilot 配置增加知识服务地址和服务 token；地址示例为 `http://127.0.0.1:8010/api/v1`。
-3. 在 CarePilot 的 `app/main.py` 初始化客户端，将其注入原有 ConsultationService。
-4. 保留原来的超时与来源卡降级策略，分别测试知识服务正常、无结果和不可用时的问诊行为。
+共享模型与服务凭据在 care-suite/.env；各项目数据库和账号独立保留。患者登录 CarePilot，后台以知识服务 viewer 身份查询。当前为单个 CarePilot 实例共享一个被授权的知识空间，不是自动按患者建立知识空间。
+
+医学解释使用混合检索；完整自动路由、图关系、SQL 和 MCP 仍在知识中台。预约以 CarePilot 业务目录、医生与号源为准。远端重排相关度阈值默认 0.12，不能与旧本地余弦阈值 0.58 混用。
+
+知识服务失败时明确提示，保留就诊字段、科室导航和预约功能。实际验证见 [联合验证记录](integration/03-validation.md)。独立检索示例仍保留在 integrations/carepilot_client.py；完整集成以 CarePilot 适配器与对应回归测试为准。
+
+## 独立客户端使用
+
+仓库内 integrations/carepilot_client.py 不依赖 CarePilot 内部 Settings，可直接复制复用：
 
 ```python
+import os
 from integrations.carepilot_client import MedKnowledgeHubClient
 
-knowledge = MedKnowledgeHubClient(
-    base_url="http://127.0.0.1:8010/api/v1",
-    token="从本机环境变量读取服务凭据",
+client = MedKnowledgeHubClient(
+    base_url=os.getenv("MEDHUB_API_URL", "http://127.0.0.1:8010/api/v1"),
+    token=os.environ["SERVICE_TOKEN"],
 )
-sources = knowledge.search("咳嗽持续超过三周", limit=2)
+try:
+    result = client.answer("咳嗽持续超过三周需要注意什么？")
+    print(result["answer"])
+finally:
+    client.close()
 ```
 
-代码示例中的 token 是说明文字，实际使用环境变量读取，不能提交真实值。
-
-## 两个项目各自负责什么
-
-CarePilot 组织问诊状态、风险提示、报告转录与人工确认预约；MedKnowledgeHub 组织资料、检索、引用、权限和版本。直接接入检索 API 时，CarePilot 使用的是证据片段，不会自动得到完整 RAG 回答；要接入 `/answers`，需单独设计问诊摘要与知识解释的呈现方式。
-
-当前 0.12 阈值对应重排相关度，与 CarePilot 原来余弦相似度 0.58 的含义不同。替换检索实现时不能沿用旧阈值并假设可比。
-
-## 验证
-
-`smoke_live.py` 检查兼容 HTTP 接口；`tests/test_api.py` 验证鉴权。正式切换时还应复测用户会话隔离、急症分支及预约人工确认。两个项目使用不同端口：CarePilot 8000/8501，MedKnowledgeHub 8010/8510。
+search 返回来源卡；answer 返回 answer、sources、status；source 按片段编号读取已授权原文。示例的输出是知识资料解释，不会创建预约。完整工作流接入还包括 CarePilot 的意图分流、状态恢复和急症优先，不能只替换类名就认为全部接入完成。

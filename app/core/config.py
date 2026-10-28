@@ -1,15 +1,17 @@
 from functools import lru_cache
 from pathlib import Path
+import os
 from typing import Literal
 
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT = Path(__file__).resolve().parents[2]
+SUITE_ENV = Path(os.getenv("CARE_SUITE_ENV_FILE", ROOT.parent / "care-suite" / ".env"))
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=ROOT / ".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(env_file=(ROOT / ".env", SUITE_ENV), env_file_encoding="utf-8", extra="ignore")
     database_url: SecretStr = SecretStr("sqlite+pysqlite:///:memory:")
     redis_url: str = "redis://127.0.0.1:16379/0"
     milvus_uri: str = "http://127.0.0.1:19531"
